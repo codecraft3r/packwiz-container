@@ -1,7 +1,7 @@
 FROM alpine:3.22.1
 
 ENV PACKWIZ_URL=""
-ENV GB_RAM=4096
+ENV MB_RAM=4096
 
 # Install dependencies
 RUN apk add --no-cache \
