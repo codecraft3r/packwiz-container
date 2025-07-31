@@ -2,6 +2,7 @@ FROM alpine:3.22.1
 
 ENV PACKWIZ_URL=""
 ENV MB_RAM=4096
+ENV RCON_PORT=25575
 
 # Install dependencies
 RUN apk add --no-cache \
