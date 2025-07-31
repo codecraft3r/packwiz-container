@@ -1,36 +1,42 @@
 FROM alpine:3.22.1
 
+# Environment variables
 ENV PACKWIZ_URL=""
+ENV WHITELIST_JSON=""
 ENV MB_RAM=4096
-ENV RCON_PORT=25575
-ENV PATH="/root/go/bin:${PATH}"
 
-USER root
-
-# Install dependencies
+# Install runtime dependencies & tools
 RUN apk add --no-cache \
     openjdk21-jre-headless \
-    dos2unix \
     curl \
-    wget \
     jq \
-    tar \
     nano \
-    go \
-    bash
+    tar
 
-COPY setup.sh /setup.sh
+# Add setup tools
+RUN apk add --no-cache \
+    runuser \
+    dos2unix \
+    go
+
+# Perform initial setup
+COPY mc-setup.sh /mc-setup.sh
 COPY entrypoint.sh /entrypoint.sh
-
-# Ensure line endings and set permissions, then remove dos2unix
-RUN dos2unix /setup.sh /entrypoint.sh && \
-    chmod +x /setup.sh /entrypoint.sh && \
-    apk del dos2unix
-
+COPY exec-setup.sh /exec-setup.sh
 COPY mc-eula.txt /mnt/server/eula.txt
 
-VOLUME ["/mnt/server"]
+RUN dos2unix /mc-setup.sh /entrypoint.sh /exec-setup.sh && \
+    chmod +x /mc-setup.sh /entrypoint.sh /exec-setup.sh
 
+RUN runuser -l root -c "sh /exec-setup.sh" && \
+    rm -rf /exec-setup.sh
+
+# Remove setup tools
+RUN apk del dos2unix runuser go
+
+# Container configuration
+USER root
+VOLUME ["/mnt/server"]
 EXPOSE 25565
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["sh", "/entrypoint.sh"]

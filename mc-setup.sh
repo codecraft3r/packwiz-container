@@ -5,15 +5,6 @@ SERVER_DIR="/mnt/server"
 mkdir -p "$SERVER_DIR"
 cd "$SERVER_DIR" || exit 1
 
-echo "Creating RCON CLI configuration..."
-cat > $HOME/.rcon-cli.yaml << EOF
-host: 127.0.0.1
-port: 25575
-password: packwiz
-EOF
-
-go install github.com/itzg/rcon-cli@latest
-
 # Ensure PACKWIZ_URL is set
 if [[ -z "$PACKWIZ_URL" ]]; then
     echo "Error: PACKWIZ_URL environment variable is not set."
@@ -111,8 +102,20 @@ cat >> server.properties << EOF
 allow-flight=true
 enable-rcon=true
 rcon.password=packwiz
-rcon.port=${RCON_PORT:-25575}
+rcon.port=25575
 EOF
+
+# Create whitelist.json if WHITELIST_JSON is set
+if [[ -n "$WHITELIST_JSON" ]]; then
+    echo "Creating whitelist.json..."
+    echo "$WHITELIST_JSON" | jq '.' > whitelist.json
+    cat >> server.properties << EOF
+    white-list=true
+    enforce-whitelist=true
+EOF
+else
+    echo "No whitelist.json provided, skipping creation."
+fi
 
 echo "Installation complete."
 echo "The server is configured to use the packwiz modpack at: $PACKWIZ_URL"

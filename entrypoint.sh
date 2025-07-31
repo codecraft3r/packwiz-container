@@ -6,7 +6,7 @@ SETUP_COMPLETE_FLAG="$SERVER_DIR/.setup_complete"
 # Check if setup has already been completed
 if [[ ! -f "$SETUP_COMPLETE_FLAG" ]]; then
     echo "First run detected. Running setup..."
-    su - root -c "/setup.sh"
+    sh /mc-setup.sh
 
     # Create flag file to indicate setup is complete
     touch "$SETUP_COMPLETE_FLAG"
@@ -18,6 +18,8 @@ fi
 # Start the server (modify this based on what your setup.sh creates)
 cd "$SERVER_DIR"
 
+echo "Running packwiz installer..."
 java -jar packwiz-installer-bootstrap.jar -g -s server $PACKWIZ_URL
 
+echo "Done. Starting Minecraft server..."
 sh /mnt/server/run.sh
