@@ -5,11 +5,22 @@ SERVER_DIR="/mnt/server"
 mkdir -p "$SERVER_DIR"
 cd "$SERVER_DIR" || exit 1
 
+echo "Creating RCON CLI configuration..."
+cat > $HOME/.rcon-cli.yaml << EOF
+host: 127.0.0.1
+port: 25575
+password: packwiz
+EOF
+
+go install github.com/itzg/rcon-cli@latest
+
 # Ensure PACKWIZ_URL is set
 if [[ -z "$PACKWIZ_URL" ]]; then
     echo "Error: PACKWIZ_URL environment variable is not set."
     exit 1
 fi
+
+
 
 # Fetch pack.toml
 echo "Fetching pack.toml from $PACKWIZ_URL"
