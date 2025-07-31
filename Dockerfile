@@ -3,6 +3,7 @@ FROM alpine:3.22.1
 ENV PACKWIZ_URL=""
 ENV MB_RAM=4096
 ENV RCON_PORT=25575
+ENV PATH="/root/go/bin:${PATH}"
 
 USER root
 
