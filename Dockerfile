@@ -4,6 +4,8 @@ ENV PACKWIZ_URL=""
 ENV MB_RAM=4096
 ENV RCON_PORT=25575
 
+USER root
+
 # Install dependencies
 RUN apk add --no-cache \
     openjdk21-jre-headless \
