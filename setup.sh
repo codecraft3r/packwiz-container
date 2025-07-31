@@ -5,10 +5,6 @@ SERVER_DIR="/mnt/server"
 mkdir -p "$SERVER_DIR"
 cd "$SERVER_DIR" || exit 1
 
-# install rcon-cli
-go install github.com/itzg/rcon-cli@latest
-
-
 # Ensure PACKWIZ_URL is set
 if [[ -z "$PACKWIZ_URL" ]]; then
     echo "Error: PACKWIZ_URL environment variable is not set."
@@ -103,6 +99,7 @@ echo "-Xms${MB_RAM}M -Xmx${MB_RAM}M -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -
 cat >> server.properties << EOF
 allow-flight=true
 enable-rcon=true
+rcon.password=packwiz
 rcon.port=${RCON_PORT:-25575}
 EOF
 
