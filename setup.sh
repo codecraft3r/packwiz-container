@@ -5,6 +5,10 @@ SERVER_DIR="/mnt/server"
 mkdir -p "$SERVER_DIR"
 cd "$SERVER_DIR" || exit 1
 
+# install rcon-cli
+go get github.com/itzg/rcon-cli
+
+
 # Ensure PACKWIZ_URL is set
 if [[ -z "$PACKWIZ_URL" ]]; then
     echo "Error: PACKWIZ_URL environment variable is not set."

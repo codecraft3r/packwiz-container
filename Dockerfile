@@ -11,6 +11,7 @@ RUN apk add --no-cache \
     wget \
     jq \
     tar \
+    go \
     bash
 
 COPY setup.sh /setup.sh
