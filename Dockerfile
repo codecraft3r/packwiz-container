@@ -36,7 +36,7 @@ RUN apk del dos2unix runuser go
 
 # Container configuration
 USER root
-VOLUME ["/mnt/server"]
+VOLUME ["/mnt/server/world"]
 EXPOSE 25565
 
 ENTRYPOINT ["sh", "/entrypoint.sh"]
