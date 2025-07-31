@@ -6,8 +6,8 @@ SETUP_COMPLETE_FLAG="$SERVER_DIR/.setup_complete"
 # Check if setup has already been completed
 if [[ ! -f "$SETUP_COMPLETE_FLAG" ]]; then
     echo "First run detected. Running setup..."
-    /setup.sh
-    
+    su - root -c "/setup.sh"
+
     # Create flag file to indicate setup is complete
     touch "$SETUP_COMPLETE_FLAG"
     echo "Setup complete."
