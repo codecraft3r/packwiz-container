@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SERVER_DIR="/mnt/server"
-SETUP_COMPLETE_FLAG="$SERVER_DIR/.setup_complete"
+SETUP_COMPLETE_FLAG="/.setup_complete"
 
 # Check if setup has already been completed
 if [[ ! -f "$SETUP_COMPLETE_FLAG" ]]; then
