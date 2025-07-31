@@ -6,7 +6,7 @@ mkdir -p "$SERVER_DIR"
 cd "$SERVER_DIR" || exit 1
 
 # install rcon-cli
-go get github.com/itzg/rcon-cli
+go install github.com/itzg/rcon-cli
 
 
 # Ensure PACKWIZ_URL is set
