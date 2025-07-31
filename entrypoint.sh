@@ -18,4 +18,5 @@ fi
 # Start the server (modify this based on what your setup.sh creates)
 cd "$SERVER_DIR"
 
+java -jar packwiz-installer-bootstrap.jar -g -s server 
 sh /mnt/server/run.sh
