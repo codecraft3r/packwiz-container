@@ -16,6 +16,7 @@ RUN apk add --no-cache \
     jq \
     tar \
     nano \
+    go \
     bash
 
 COPY setup.sh /setup.sh
