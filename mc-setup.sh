@@ -100,19 +100,21 @@ echo "-Xms${MB_RAM}M -Xmx${MB_RAM}M -XX:+AlwaysPreTouch -XX:+DisableExplicitGC -
 # Create server.properties file
 cat >> server.properties << EOF
 allow-flight=true
+white-list=true
+enforce-whitelist=true
 enable-rcon=true
 rcon.password=packwiz
 rcon.port=25575
 EOF
 
 # Create whitelist.json if WHITELIST_JSON is set
-if [[ -n "$WHITELIST_JSON" ]]; then
+if [[ -n "${WHITELIST_JSON//[[:space:]]/}" ]]; then
     echo "Creating whitelist.json..."
-    echo "$WHITELIST_JSON" | jq '.' > whitelist.json
-    cat >> server.properties << EOF
-    white-list=true
-    enforce-whitelist=true
-EOF
+    if echo "$WHITELIST_JSON" | jq -e . >/dev/null 2>&1; then
+        echo "$WHITELIST_JSON" | jq . > whitelist.json.tmp && mv whitelist.json.tmp whitelist.json
+    else
+        echo "Invalid WHITELIST_JSON provided, skipping creation."
+    fi
 else
     echo "No whitelist.json provided, skipping creation."
 fi
