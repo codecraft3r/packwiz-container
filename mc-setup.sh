@@ -79,7 +79,7 @@ esac
 
 # Download and install Packwiz installer bootstrap
 echo "Installing Packwiz bootstrap..."
-PACKWIZ_BOOTSTRAP_URL="https://github.com/packwiz/packwiz-installer-bootstrap/releases/download/v0.0.3/packwiz-installer-bootstrap.jar"
+PACKWIZ_BOOTSTRAP_URL="https://github.com/codecraft3r/packwiz-installer-bootstrap/releases/latest/download/packwiz-installer-bootstrap.jar"
 if [[ -z "$PACKWIZ_BOOTSTRAP_URL" ]]; then
     echo "Error: Failed to get Packwiz bootstrap URL."
     exit 1
