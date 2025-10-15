@@ -1,21 +1,31 @@
 #!/bin/bash
 
+# Source the URL resolver
+source /fetch-latest-release.sh
+
 # Define server directory
 SERVER_DIR="/mnt/server"
 mkdir -p "$SERVER_DIR"
 cd "$SERVER_DIR" || exit 1
 
-# Ensure PACKWIZ_URL is set
-if [[ -z "$PACKWIZ_URL" ]]; then
-    echo "Error: PACKWIZ_URL environment variable is not set."
+# Resolve the packwiz URL from environment variables
+echo "Resolving packwiz URL..."
+RESOLVED_PACKWIZ_URL=$(resolve_packwiz_url)
+
+if [[ $? -ne 0 || -z "$RESOLVED_PACKWIZ_URL" ]]; then
+    echo "Error: Could not resolve packwiz URL. Please set either:"
+    echo "  - PACKWIZ_URL (direct URL to pack.toml)"
+    echo "  - GH_USERNAME and GH_REPO (optionally with PACK_VERSION)"
     exit 1
 fi
+
+echo "Using packwiz URL: $RESOLVED_PACKWIZ_URL"
 
 
 
 # Fetch pack.toml
-echo "Fetching pack.toml from $PACKWIZ_URL"
-curl -sSL "$PACKWIZ_URL" -o pack.toml
+echo "Fetching pack.toml from $RESOLVED_PACKWIZ_URL"
+curl -sSL "$RESOLVED_PACKWIZ_URL" -o pack.toml
 
 # Extract modloader and version information
 MODLOADER=$(grep -E '^(forge|neoforge|fabric|quilt)\s*=' pack.toml | awk -F'=' '{print $1}' | tr -d ' ')
@@ -90,7 +100,7 @@ curl -sSL "$PACKWIZ_BOOTSTRAP_URL" -o packwiz-installer-bootstrap.jar
 # Create packwiz-installer.properties file
 echo "Creating packwiz-installer.properties..."
 cat > packwiz-installer.properties << EOF
-pack.url=$PACKWIZ_URL
+pack.url=$RESOLVED_PACKWIZ_URL
 auto-update=true
 EOF
 
@@ -120,4 +130,4 @@ else
 fi
 
 echo "Installation complete."
-echo "The server is configured to use the packwiz modpack at: $PACKWIZ_URL"
+echo "The server is configured to use the packwiz modpack at: $RESOLVED_PACKWIZ_URL"
