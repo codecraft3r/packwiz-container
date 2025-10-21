@@ -1,0 +1,30 @@
+version: '3.8'
+name: minecraft
+services:
+  server:
+    image: ghcr.io/codecraft3r/packwiz-container:main
+    environment:
+      - GH_USERNAME=<Your GitHub Username> # Change this to your GitHub username
+      - GH_REPO=<Your Packwiz Repository> # Change this to the name to the repository containing your packwiz modpack
+      - MB_RAM=6144 # Recommended minimum for modded Minecraft, but you can adjust as needed
+    volumes:
+      - world-data:/mnt/server/world # Persist specifically the world data, if you want to keep other data use /mnt/server
+      - /root/mc-globals/whitelist.json:/mnt/server/whitelist.json
+    ports:
+      - "25565:25565"
+    restart: unless-stopped
+  backup:
+    image: itzg/mc-backup
+    environment:
+      BACKUP_INTERVAL: "12h"
+      RCON_HOST: server
+      RCON_PASSWORD: packwiz
+      INITIAL_DELAY: 10m
+    volumes:
+      - world-data:/data:ro
+      - ./mc-backup:/backups # Change this to your desired backup location on the host
+
+volumes:
+
+  world-data:
+
