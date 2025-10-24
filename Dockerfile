@@ -6,7 +6,6 @@ ENV GH_USERNAME=""
 ENV GH_REPO=""
 ENV PACK_VERSION=""
 
-ENV WHITELIST_JSON=""
 ENV MB_RAM=4096
 
 # Install runtime dependencies & tools

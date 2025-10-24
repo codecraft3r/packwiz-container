@@ -117,17 +117,5 @@ rcon.password=packwiz
 rcon.port=25575
 EOF
 
-# Create whitelist.json if WHITELIST_JSON is set
-if [[ -n "${WHITELIST_JSON//[[:space:]]/}" ]]; then
-    echo "Creating whitelist.json..."
-    if echo "$WHITELIST_JSON" | jq -e . >/dev/null 2>&1; then
-        echo "$WHITELIST_JSON" | jq . > whitelist.json.tmp && mv whitelist.json.tmp whitelist.json
-    else
-        echo "Invalid WHITELIST_JSON provided, skipping creation."
-    fi
-else
-    echo "No whitelist.json provided, skipping creation."
-fi
-
 echo "Installation complete."
 echo "The server is configured to use the packwiz modpack at: $RESOLVED_PACKWIZ_URL"

@@ -38,7 +38,6 @@ docker run \
 | `GH_USERNAME` | ** | GitHub username or organization | `myusername` |
 | `GH_REPO` | ** | GitHub repository name | `my-modpack` |
 | `PACK_VERSION` | No | Specific version/tag (if not set, uses latest release) | `v1.2.3`, `main` |
-| `WHITELIST_JSON` | No | JSON array of whitelisted players | `[{"uuid":"...","name":"Player1"}]` |
 | `MB_RAM` | No | Memory allocation in MB (default: 4096) | `8192` |
 
 \* Either `PACKWIZ_URL` OR both `GH_USERNAME` and `GH_REPO` must be set  
@@ -79,7 +78,6 @@ docker run \
   -e GH_USERNAME=codecraft3r \
   -e GH_REPO=my-modpack \
   -e MB_RAM="8192" \
-  -e WHITELIST_JSON='[{"uuid":"550e8400-e29b-41d4-a716-446655440000","name":"Player1"}]' \
   -p 25565:25565 \
   -v ./world:/mnt/server/world \
   packwiz-container
