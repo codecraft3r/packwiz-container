@@ -1,4 +1,4 @@
-FROM ghcr.io/graalvm/jdk-community:25.0.1-ol8-20251021
+FROM ghcr.io/graalvm/jdk-community:21.0.2-ol9-20240116
 
 # Environment variables
 ENV PACKWIZ_URL=""
