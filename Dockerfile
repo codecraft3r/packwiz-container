@@ -14,15 +14,14 @@ RUN microdnf install -y \
     jq \
     nano \
     tar \
-    gzip
+    gzip \
+    findutils
 
 # Add setup tools
 RUN microdnf install -y \
     util-linux \
     dos2unix \
-    golang \
-    dos2unix \
-    go
+    golang 
 
 # Perform initial setup
 COPY mc-setup.sh /mc-setup.sh
