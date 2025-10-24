@@ -9,15 +9,18 @@ ENV PACK_VERSION=""
 ENV MB_RAM=4096
 
 # Install runtime dependencies & tools
-RUN apk add --no-cache \
+RUN microdnf install -y \
     curl \
     jq \
     nano \
-    tar
+    tar \
+    gzip
 
 # Add setup tools
-RUN apk add --no-cache \
-    runuser \
+RUN microdnf install -y \
+    util-linux \
+    dos2unix \
+    golang \
     dos2unix \
     go
 
@@ -35,7 +38,7 @@ RUN runuser -l root -c "sh /exec-setup.sh" && \
     rm -rf /exec-setup.sh
 
 # Remove setup tools
-RUN apk del dos2unix runuser go
+# RUN microdnf remove -y dos2unix golang go - disable for now
 
 # Container configuration
 USER root
