@@ -25,7 +25,7 @@ echo "Using packwiz URL: $RESOLVED_PACKWIZ_URL"
 
 # Fetch pack.toml
 echo "Fetching pack.toml from $RESOLVED_PACKWIZ_URL"
-curl -sSL "$RESOLVED_PACKWIZ_URL" -o pack.toml
+curl -sSL -A "packwiz-container/1.0" "$RESOLVED_PACKWIZ_URL" -o pack.toml
 
 # Extract modloader and version information
 MODLOADER=$(grep -E '^(forge|neoforge|fabric|quilt)\s*=' pack.toml | awk -F'=' '{print $1}' | tr -d ' ')
@@ -44,7 +44,7 @@ echo "Minecraft version: $MINECRAFT_VERSION"
 # Install mc-image-helper directly in the current directory
 echo "Installing mc-image-helper..."
 mkdir -p mc-image-helper
-curl -sSL https://github.com/itzg/mc-image-helper/releases/download/1.41.9/mc-image-helper-1.41.9.tgz | tar -xz -C mc-image-helper --strip-components=1
+curl -sSL -A "packwiz-container/1.0" https://github.com/itzg/mc-image-helper/releases/download/1.41.9/mc-image-helper-1.41.9.tgz | tar -xz -C mc-image-helper --strip-components=1
 chmod +x mc-image-helper/bin/mc-image-helper
 
 # Install mod loader using mc-image-helper
@@ -95,7 +95,7 @@ if [[ -z "$PACKWIZ_BOOTSTRAP_URL" ]]; then
     exit 1
 fi
 
-curl -sSL "$PACKWIZ_BOOTSTRAP_URL" -o packwiz-installer-bootstrap.jar
+curl -sSL -A "packwiz-container/1.0" "$PACKWIZ_BOOTSTRAP_URL" -o packwiz-installer-bootstrap.jar
 
 # Create packwiz-installer.properties file
 echo "Creating packwiz-installer.properties..."

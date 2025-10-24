@@ -15,15 +15,28 @@ construct_github_packwiz_url() {
     # If version is not specified, fetch latest release
     if [ -z "$version" ]; then
         echo "No version specified, fetching latest release for $username/$repo..." >&2
-        local latest_tag
-        latest_tag=$(curl -s -A "packwiz-container/1.0" "https://api.github.com/repos/$username/$repo/releases/latest" | jq -r '.tag_name // empty')
+        local api_response
+        api_response=$(curl -s -A "packwiz-container/1.0" -w "\n%{http_code}" "https://api.github.com/repos/$username/$repo/releases/latest")
+        local http_code=$(echo "$api_response" | tail -n1)
+        local json_body=$(echo "$api_response" | head -n -1)
         
-        if [ -z "$latest_tag" ] || [ "$latest_tag" = "null" ]; then
-            echo "Warning: No releases found for $username/$repo. Using 'main' branch." >&2
+        if [ "$http_code" = "403" ]; then
+            echo "Warning: GitHub API rate limit exceeded (HTTP 403). Using 'main' branch." >&2
+            version="main"
+        elif [ "$http_code" != "200" ]; then
+            echo "Warning: GitHub API returned HTTP $http_code. Using 'main' branch." >&2
             version="main"
         else
-            version="$latest_tag"
-            echo "Latest release found: $version" >&2
+            local latest_tag
+            latest_tag=$(echo "$json_body" | jq -r '.tag_name // empty')
+            
+            if [ -z "$latest_tag" ] || [ "$latest_tag" = "null" ]; then
+                echo "Warning: No releases found for $username/$repo. Using 'main' branch." >&2
+                version="main"
+            else
+                version="$latest_tag"
+                echo "Latest release found: $version" >&2
+            fi
         fi
     else
         echo "Using specified version: $version" >&2

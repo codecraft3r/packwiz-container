@@ -23,15 +23,14 @@ cd "$SERVER_DIR"
 
 # Prepare packwiz installer arguments
 echo "Running packwiz installer..."
-if [[ -n "$PACKWIZ_URL" ]]; then
+if [[ -n "${PACKWIZ_URL:-}" ]]; then
     echo "Using direct PACKWIZ_URL: $PACKWIZ_URL"
     java -jar packwiz-installer-bootstrap.jar -g -s server "$PACKWIZ_URL"
-elif [[ -n "$GH_USER" && -n "$GH_REPO" ]]; then
+elif [[ -n "${GH_USER:-}" && -n "${GH_REPO:-}" ]]; then
     echo "Using GitHub user: $GH_USER and repo: $GH_REPO"
     java -jar packwiz-installer-bootstrap.jar -g -s server --user "$GH_USER" --repo "$GH_REPO"
 else
-    echo "Error: Either PACKWIZ_URL or both GH_USER and GH_REPO environment variables must be set"
-    exit 1
+    echo "No packwiz configuration found. Skipping packwiz installer..."
 fi
 
 echo "Done. Starting Minecraft server..."
