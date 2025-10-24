@@ -18,13 +18,13 @@ Use GitHub repository information to automatically construct URLs and optionally
 ```bash
 # Use latest release automatically
 docker run \
-  -e GH_USERNAME=yourusername \
+  -e GH_USER=yourusername \
   -e GH_REPO=yourrepo \
   packwiz-container
 
 # Use specific version/tag
 docker run \
-  -e GH_USERNAME=yourusername \
+  -e GH_USER=yourusername \
   -e GH_REPO=yourrepo \
   -e PACK_VERSION="v1.2.3" \
   packwiz-container
@@ -35,18 +35,18 @@ docker run \
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
 | `PACKWIZ_URL` | * | Direct URL to pack.toml (takes priority) | `https://raw.githubusercontent.com/user/repo/main/pack.toml` |
-| `GH_USERNAME` | ** | GitHub username or organization | `myusername` |
+| `GH_USER` | ** | GitHub username or organization | `myusername` |
 | `GH_REPO` | ** | GitHub repository name | `my-modpack` |
 | `PACK_VERSION` | No | Specific version/tag (if not set, uses latest release) | `v1.2.3`, `main` |
 | `MB_RAM` | No | Memory allocation in MB (default: 4096) | `8192` |
 
-\* Either `PACKWIZ_URL` OR both `GH_USERNAME` and `GH_REPO` must be set  
+\* Either `PACKWIZ_URL` OR both `GH_USER` and `GH_REPO` must be set  
 \** Required when not using `PACKWIZ_URL`
 
 ## Priority System
 
 1. **`PACKWIZ_URL`** - If set, uses this directly (no GitHub API calls)
-2. **GitHub Variables** - If `PACKWIZ_URL` is not set, constructs URL from `GH_USERNAME`, `GH_REPO`, and `PACK_VERSION`
+2. **GitHub Variables** - If `PACKWIZ_URL` is not set, constructs URL from `GH_USER`, `GH_REPO`, and `PACK_VERSION`
 3. **Latest Release** - If `PACK_VERSION` is empty, automatically fetches latest GitHub release
 
 ## Examples
@@ -54,17 +54,17 @@ docker run \
 ### Using Latest Release
 Automatically uses the newest tagged release:
 ```bash
-docker run -e GH_USERNAME=codecraft3r -e GH_REPO=my-modpack packwiz-container
+docker run -e GH_USER=codecraft3r -e GH_REPO=my-modpack packwiz-container
 ```
 
 ### Using Specific Version
 ```bash
-docker run -e GH_USERNAME=codecraft3r -e GH_REPO=my-modpack -e PACK_VERSION="v2.1.0" packwiz-container
+docker run -e GH_USER=codecraft3r -e GH_REPO=my-modpack -e PACK_VERSION="v2.1.0" packwiz-container
 ```
 
 ### Using Main Branch
 ```bash
-docker run -e GH_USERNAME=codecraft3r -e GH_REPO=my-modpack -e PACK_VERSION="main" packwiz-container
+docker run -e GH_USER=codecraft3r -e GH_REPO=my-modpack -e PACK_VERSION="main" packwiz-container
 ```
 
 ### Direct URL Override
@@ -75,7 +75,7 @@ docker run -e PACKWIZ_URL=https://example.com/custom/pack.toml packwiz-container
 ### With Additional Options
 ```bash
 docker run \
-  -e GH_USERNAME=codecraft3r \
+  -e GH_USER=codecraft3r \
   -e GH_REPO=my-modpack \
   -e MB_RAM="8192" \
   -p 25565:25565 \

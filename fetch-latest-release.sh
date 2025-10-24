@@ -63,7 +63,7 @@ resolve_packwiz_url() {
     # Debug: Show current environment variables
     echo "Debug: Environment variables:" >&2
     echo "  PACKWIZ_URL='$PACKWIZ_URL'" >&2
-    echo "  GH_USERNAME='$GH_USERNAME'" >&2
+    echo "  GH_USER='$GH_USER'" >&2
     echo "  GH_REPO='$GH_REPO'" >&2
     echo "  PACK_VERSION='$PACK_VERSION'" >&2
     
@@ -75,14 +75,14 @@ resolve_packwiz_url() {
     fi
     
     # Priority 2: Construct from GitHub environment variables
-    if [ -n "$GH_USERNAME" ] && [ -n "$GH_REPO" ]; then
+    if [ -n "$GH_USER" ] && [ -n "$GH_REPO" ]; then
         echo "Constructing URL from GitHub environment variables:" >&2
-        echo "  Username: $GH_USERNAME" >&2
+        echo "  Username: $GH_USER" >&2
         echo "  Repository: $GH_REPO" >&2
         echo "  Version: $([ -n "$PACK_VERSION" ] && echo "$PACK_VERSION" || echo "latest")" >&2
         
         local constructed_url
-        constructed_url=$(construct_github_packwiz_url "$GH_USERNAME" "$GH_REPO" "$PACK_VERSION")
+        constructed_url=$(construct_github_packwiz_url "$GH_USER" "$GH_REPO" "$PACK_VERSION")
         
         if [ $? -eq 0 ] && [ -n "$constructed_url" ]; then
             echo "$constructed_url"
@@ -93,7 +93,7 @@ resolve_packwiz_url() {
         fi
     fi
     
-    echo "Error: Neither PACKWIZ_URL nor GitHub variables (GH_USERNAME, GH_REPO) are set" >&2
+    echo "Error: Neither PACKWIZ_URL nor GitHub variables (GH_USER, GH_REPO) are set" >&2
     echo "Available environment variables:" >&2
     env | grep -E "(PACKWIZ|GH_|PACK_)" | sort >&2
     return 1

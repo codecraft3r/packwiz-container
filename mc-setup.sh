@@ -15,7 +15,7 @@ RESOLVED_PACKWIZ_URL=$(resolve_packwiz_url)
 if [[ $? -ne 0 || -z "$RESOLVED_PACKWIZ_URL" ]]; then
     echo "Error: Could not resolve packwiz URL. Please set either:"
     echo "  - PACKWIZ_URL (direct URL to pack.toml)"
-    echo "  - GH_USERNAME and GH_REPO (optionally with PACK_VERSION)"
+    echo "  - GH_USER and GH_REPO (optionally with PACK_VERSION)"
     exit 1
 fi
 
