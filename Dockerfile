@@ -2,7 +2,7 @@ FROM ghcr.io/graalvm/jdk-community:21.0.2-ol9-20240116
 
 # Environment variables
 ENV PACKWIZ_URL=""
-ENV GH_USERNAME=""
+ENV GH_USER=""
 ENV GH_REPO=""
 ENV PACK_VERSION=""
 
