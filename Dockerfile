@@ -1,4 +1,4 @@
-FROM alpine:3.22.1
+FROM ghcr.io/graalvm/jdk-community:25.0.1-ol8-20251021
 
 # Environment variables
 ENV PACKWIZ_URL=""
@@ -11,7 +11,6 @@ ENV MB_RAM=4096
 
 # Install runtime dependencies & tools
 RUN apk add --no-cache \
-    openjdk21-jre-headless \
     curl \
     jq \
     nano \
