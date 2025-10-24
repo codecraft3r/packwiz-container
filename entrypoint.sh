@@ -21,24 +21,18 @@ fi
 # Start the server (modify this based on what your setup.sh creates)
 cd "$SERVER_DIR"
 
-# Resolve the packwiz URL (with PACKWIZ_URL override)
-if [[ -n "$PACKWIZ_URL" ]]; then
-    echo "Using direct PACKWIZ_URL override: $PACKWIZ_URL"
-    RESOLVED_PACKWIZ_URL="$PACKWIZ_URL"
-else
-    echo "Resolving packwiz URL from GitHub variables..."
-    RESOLVED_PACKWIZ_URL=$(resolve_packwiz_url)
-    
-    if [[ $? -ne 0 || -z "$RESOLVED_PACKWIZ_URL" ]]; then
-        echo "Error: Could not resolve packwiz URL"
-        exit 1
-    fi
-fi
-
-echo "Using packwiz URL: $RESOLVED_PACKWIZ_URL"
-
+# Prepare packwiz installer arguments
 echo "Running packwiz installer..."
-java -jar packwiz-installer-bootstrap.jar -g -s server "$RESOLVED_PACKWIZ_URL"
+if [[ -n "$PACKWIZ_URL" ]]; then
+    echo "Using direct PACKWIZ_URL: $PACKWIZ_URL"
+    java -jar packwiz-installer-bootstrap.jar -g -s server "$PACKWIZ_URL"
+elif [[ -n "$GH_USER" && -n "$GH_REPO" ]]; then
+    echo "Using GitHub user: $GH_USER and repo: $GH_REPO"
+    java -jar packwiz-installer-bootstrap.jar -g -s server --user "$GH_USER" --repo "$GH_REPO"
+else
+    echo "Error: Either PACKWIZ_URL or both GH_USER and GH_REPO environment variables must be set"
+    exit 1
+fi
 
 echo "Done. Starting Minecraft server..."
 sh /mnt/server/run.sh
